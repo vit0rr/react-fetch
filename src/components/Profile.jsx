@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import {
   Fade,
   Button,
@@ -17,14 +16,14 @@ function Profile() {
   const [user, setUser] = useState([]);
   const { isOpen, onToggle } = useDisclosure();
 
-  const getUser = () => {
-    axios.get("https://api.github.com/users/vit0rr").then((res) => {
-      const theUser = res.data;
-      setUser(theUser);
-    });
-  };
-
-  useEffect(() => getUser(), []);
+  useEffect(() => {
+    const fetchApi = () => {
+      fetch("https://api.github.com/users/vit0rr")
+        .then((response) => response.json())
+        .then((data) => setUser(data));
+    };
+    fetchApi();
+  }, []);
 
   if (!user) return <span>Loading...</span>;
   return (
